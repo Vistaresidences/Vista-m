@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+        #form-container {
+            margin-top: 20px;
+        }
+        #answer-box {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        #next-button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #next-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Vista Form</h2>
+    <div id="form-container">
+        <p id="question-label"></p>
+        <input type="text" id="answer-box" placeholder="... جواب را در این کادر بنویسید" />
+        <button id="next-button">ادامه</button>
+    </div>
+
+    <script>
+        // Questions array
+        const questions = [
+            "برای شروع لطفا نام خود را وارد کنید",
+            "حداکثر مبلغ در نظر گرفتع شده برای اجاره منزل را معین کنید",
+            "لطفا تعداد دقیق مستجر همراه با جنسیت را ذکر کنید",
+            "مدل منزل مورد نظر را مشخص کنید (استودیو، تک خواب ، دوخواب و...",
+            "لوکیشن(لوکیشن های) مد نظر خود را بنویسید",
+            "شرایط خاص (کلید اول، ریمونت و...)مشخص شود",
+            "آیا در صورت ممکن نبودن رجستری قابل قبول است؟",
+            "اگر موارد خاصی را لازم به در نظر گرفتن دارید بنویسید",
+            "راه ارتباطی ما با شما : ( آیدی تلگرام یا شماره واتساپ)"
+        ];
+
+        // Array to store answers
+        const answers = [];
+        let currentQuestion = 0;
+
+        // Get HTML elements
+        const questionLabel = document.getElementById("question-label");
+        const answerBox = document.getElementById("answer-box");
+        const nextButton = document.getElementById("next-button");
+
+        // Function to load questions
+        function loadQuestion() {
+            if (currentQuestion < questions.length) {
+                questionLabel.innerText = questions[currentQuestion]; // Display current question
+                answerBox.value = ""; // Clear the input box
+                answerBox.focus(); // Focus on input field
+            } else {
+                alert("Thank you for your responses!");
+                sendToTelegram(); // Send the answers to Telegram
+            }
+        }
+
+        // Event listener for the "Next" button
+        nextButton.addEventListener("click", function() {
+            const answer = answerBox.value.trim();
+            if (answer) {
+                answers.push(answer); // Save the answer
+                currentQuestion++; // Move to the next question
+                loadQuestion(); // Load the next question
+            } else {
+                alert("Please provide an answer before proceeding.");
+            }
+        });
+
+        // Function to send answers to Telegram
+        function sendToTelegram() {
+ 
