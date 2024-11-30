@@ -73,7 +73,7 @@
                 answerBox.value = ""; // Clear the input box
                 answerBox.focus(); // Focus on input field
             } else {
-                alert("Thank you for your responses!");
+                alert("ممنون از همراهی شما ، پاسخ های شما با موفقیت ارسال شد ، اکنون می توانید پنجره سوالات را ببندید");
                 sendToTelegram(); // Send the answers to Telegram
             }
         }
@@ -86,10 +86,55 @@
                 currentQuestion++; // Move to the next question
                 loadQuestion(); // Load the next question
             } else {
-                alert("Please provide an answer before proceeding.");
+                alert("لطفا برای سوال مطرح شده پاسخی بنویسید");
             }
         });
 
         // Function to send answers to Telegram
         function sendToTelegram() {
- 
+            const token = "7493959835:AAGS44EHUvCeTV5XNT2I77uZIISSFJ1O_xw"; // Replace with your bot token
+            const chatId = "-4750668537"; // Replace with your group chat ID (with the negative sign)
+
+            // Prepare the message with "from Shayan" prepended
+            const message = `from Shayan\n\n${answers.join("\n")}`; // Add "from Shayan" at the top
+
+            // Construct the API URL for sending the message
+            const url = `https://api.telegram.org/bot${token}/sendMessage`;
+            const body = {
+                chat_id: chatId,
+                text: message
+            };
+
+            // Send the data to Telegram using fetch API
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body) // Convert the body to JSON format
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to send message to Telegram.");
+                }
+                console.log("Answers sent to Telegram successfully.");
+                closeWindow(); // Close the tab/window
+            })
+            .catch(error => {
+                console.error("Error sending answers to Telegram:", error);
+                alert("There was an error sending your answers. Please try again.");
+            });
+        }
+
+        // Function to close the window
+        function closeWindow() {
+            alert("Closing the form now. Have a great day!");
+            window.open('', '_self'); // Necessary for some browsers
+            window.close(); // Attempt to close the window/tab
+        }
+
+        // Initialize the form by loading the first question
+        loadQuestion();
+    </script>
+</body>
+</html>
